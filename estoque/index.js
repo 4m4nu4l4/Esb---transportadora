@@ -41,6 +41,45 @@ app.post('/api/v1/products', async (req, res) => {
     }
 });
 
+app.put('/api/v1/products/:id', (req, res) => {
+    const { id } = req.params;
+    const { nome, preco } = req.body;
+
+    const produto = produtos.find(prod => prod.id === id);
+    if (!produto) {
+        return res.status(404).json({ error: 'Produto não encontrado' });
+    }
+
+    produto.nome = nome !== undefined ? nome : produto.nome;
+    produto.preco = preco !== undefined ? preco : produto.preco;
+
+    res.status(200).json(produto);
+});
+
+app.delete('/api/v1/products/:id', (req, res) => {
+    const { id } = req.params;
+
+    const index = produtos.findIndex(prod => prod.id === id);
+    if (index === -1) {
+        return res.status(404).json({ error: 'Produto não encontrado' });
+    }
+
+    const [deletedProduct] = produtos.splice(index, 1);
+
+    res.status(200).json(deletedProduct);
+});
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
+
+
+// Função para gerar um ID único para cada produto
+/*function gerarId() {
+    return Math.random().toString(36).substr(2, 9);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}*/
+
