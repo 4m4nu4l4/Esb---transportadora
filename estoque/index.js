@@ -14,14 +14,14 @@ function sleep(ms) {
 async function adicionarPrateleira(produto, preco, posicao) {
     await sleep(3000);
     try {
-        await axios.post('http://localhost:3002/api/v1/shelf', { produto, preco, posicao });
+        await axios.post('http://localhost:3002/api/v1/shelf', { nome, categoria, quantidade, status_prod });
     } catch (error) {
         console.error('Erro ao adicionar prateleira:', error.message);
     }
 }
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
 });
 
 app.get('/api/v1/products', (req, res) => {
@@ -30,11 +30,11 @@ app.get('/api/v1/products', (req, res) => {
 
 app.post('/api/v1/products', async (req, res) => {
     try {
-        const { nome, preco } = req.body;
-        const produto = { nome, preco };
+        const { nome, categoria, quantidade, status_prod } = req.body;
+        const produto = { nome, categoria, quantidade, status_prod };
         produtos.push(produto);
 
-        await adicionarPrateleira(nome, preco, nome.substring(0, 1));
+        await adicionarEstoque(nome, categoria.substring(0, 1)); 
         res.status(201).json(produto);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -43,7 +43,7 @@ app.post('/api/v1/products', async (req, res) => {
 
 app.put('/api/v1/products/:id', (req, res) => {
     const { id } = req.params;
-    const { nome, preco } = req.body;
+    const { nome, categoria, quantidade, status_prod } = req.body;
 
     const produto = produtos.find(prod => prod.id === id);
     if (!produto) {
@@ -51,7 +51,9 @@ app.put('/api/v1/products/:id', (req, res) => {
     }
 
     produto.nome = nome !== undefined ? nome : produto.nome;
-    produto.preco = preco !== undefined ? preco : produto.preco;
+    produto.categoria = categoria !== undefined ? categoria : produto.categoria;
+    produto.quantidade = quantidade !== undefined ? quantidade : produto.quantidade;
+    produto.status_prod = status_prod !== undefined ? status_prod : produto.status_prod;
 
     res.status(200).json(produto);
 });
