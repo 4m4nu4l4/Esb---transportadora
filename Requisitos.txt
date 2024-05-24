@@ -1,0 +1,35 @@
+ESB TRANSPORTADORA 
+
+Requisitos Funcionais
+RF01
+Os produtos devem ser adicionados ao estoque, alterados, consultados e deletados.
+RF02
+Os produtos devem armazenar os seguintes dados: Nome, Categoria, Quantidade em estoque e status do produto
+RF03
+Ao alterar o produto em estoque deverá exibir um campo para a alteração de status (disponível, indisponível)
+RF04
+O sistema deverá realizar a comunicação entre as pastas por meio do fetch
+RF05
+O sistema deverá utilizar a metodologia ESB para a tradução de dados
+PF06
+A transportadora deve buscar o id do produto para incluir na listagem de produtos a serem transportados
+RF07
+A transportadora deve atualizar o status de acordo com o recebimento do produto para seu local de entrega “Entregue”, “Não recebido”.
+RF08
+A transportadora deve adicionar o produto pelo seu id, nome do estoque, localização, valor do transporte, Cnpj
+
+
+
+Requisitos Não-Funcionais
+RNF01
+A aplicação deve utilizar node.js e express
+RNF02
+O sistema deve utilizar array para o armazenamento de produtos
+RNF03
+O sistema deverá possuir as seguintes pastas: estoque, esb e transportadora
+RNF04
+O projeto deverá estar publicado no GitHub para realizar a análise de versões do projeto
+RNF05
+O campo de status deverá ser do tipo: String
+
+
