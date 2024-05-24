@@ -11,24 +11,24 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function adicionarPrateleira(produto, preco, posicao) {
+/*async function adicionarPrateleira(produto, preco, posicao) {
     await sleep(3000);
     try {
         await axios.post('http://localhost:3002/api/v1/shelf', { nome, categoria, quantidade, status_prod });
     } catch (error) {
         console.error('Erro ao adicionar prateleira:', error.message);
     }
-}
+}*/
 
 app.get('/', (req, res) => {
     res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
 });
 
-app.get('/api/v1/products', (req, res) => {
+app.get('http://localhost:3000/api/products', (req, res) => {
     res.status(200).json(produtos);
 });
 
-app.post('/api/v1/products', async (req, res) => {
+app.post('http://localhost:3000/api/products', async (req, res) => {
     try {
         const { nome, categoria, quantidade, status_prod } = req.body;
         const produto = { nome, categoria, quantidade, status_prod };
@@ -41,7 +41,7 @@ app.post('/api/v1/products', async (req, res) => {
     }
 });
 
-app.put('/api/v1/products/:id', (req, res) => {
+app.put('http://localhost:3000/api/products/:id', (req, res) => {
     const { id } = req.params;
     const { nome, categoria, quantidade, status_prod } = req.body;
 
@@ -58,7 +58,7 @@ app.put('/api/v1/products/:id', (req, res) => {
     res.status(200).json(produto);
 });
 
-app.delete('/api/v1/products/:id', (req, res) => {
+app.delete('http://localhost:3000/api/products/:id', (req, res) => {
     const { id } = req.params;
 
     const index = produtos.findIndex(prod => prod.id === id);
