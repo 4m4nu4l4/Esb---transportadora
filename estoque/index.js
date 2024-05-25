@@ -20,6 +20,9 @@ function sleep(ms) {
     }
 }*/
 
+
+// A transportadora deve atualizar o status de acordo com o recebimento do produto para seu local de entrega “Entregue”, “Não recebido”.
+
 app.get('/', (req, res) => {
     res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
 });

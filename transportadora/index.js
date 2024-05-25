@@ -14,18 +14,18 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.get('/api/v1/shelf', (req, res) => {
+app.get('http://localhost:3001/api/transporte', (req, res) => {
     res.status(200).json(prateleiras);
 });
 
-app.post('/api/v1/shelf', (req, res) => {
+app.post('http://localhost:3001/api/transporte', (req, res) => {
     const { produto, preco, posicao } = req.body;
     const prateleira = { id: gerarId(), produto, preco, posicao };
     prateleiras.push(prateleira);
     res.status(201).json(prateleira);
 });
 
-app.put('/api/v1/shelf/:id', (req, res) => {
+app.put('http://localhost:3001/api/transportes/:id', async (req, res) => {
     const { id } = req.params;
     const { produto, preco, posicao } = req.body;
 
@@ -38,10 +38,19 @@ app.put('/api/v1/shelf/:id', (req, res) => {
     prateleira.preco = preco !== undefined ? preco : prateleira.preco;
     prateleira.posicao = posicao !== undefined ? posicao : prateleira.posicao;
 
+    // Atualiza o status do produto no serviço de estoque
+    try {
+        await axios.put(`http://localhost:3000/api/products/${prateleira.produto}`, {
+            status_prod: prateleira.status
+        });
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro ao atualizar o status do produto no serviço de estoque' });
+    }
+
     res.status(200).json(prateleira);
 });
 
-app.delete('/api/v1/shelf/:id', (req, res) => {
+app.delete('http://localhost:3001/api/transportes/:id', (req, res) => {
     const { id } = req.params;
 
     const index = prateleiras.findIndex(p => p.id === id);
