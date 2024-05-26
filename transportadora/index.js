@@ -6,19 +6,22 @@ const app = express();
 app.use(express.json());
 
 const produtos = [];
+const transportes = [];
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function adicionarEstoque(nome, categoria, quantidade) {
+// fiquei na dúvida se em transportadora, deveríamos ter essa função do estoque
+
+/* async function adicionarEstoque(nome, categoria, quantidade) {
     await sleep(3000);
     try {
-        await axios.post('http://localhost:3001/api/v1/stock', { nome, categoria, quantidade });
+        await axios.post('http://localhost:3001/api/v1/estoque', { nome, categoria, quantidade });
     } catch (error) {
         console.error('Erro ao adicionar estoque:', error.message);
     }
-}
+}*/
 
 app.get('/', (req, res) => {
     res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
@@ -26,6 +29,24 @@ app.get('/', (req, res) => {
 
 app.get('/api/products', (req, res) => {
     res.status(200).json(produtos);
+});
+
+/*RF08 - A transportadora deve adicionar o produto pelo seu id, nome do estoque, localização, valor do transporte, Cnpj.
+
+Parcialmente atendido: A rota POST /api/transporte adiciona produtos com produto, preco e posicao. Falta incluir localização, valor do transporte, Cnpj. */
+
+app.post('/api/transporte', (req, res) => {
+    const { id, nomeDoEstoque, produto, localizacao, valorDoTransporte, cnpj } = req.body;
+    const transporte = {
+        id: id || gerarId(),
+        nomeDoEstoque,
+        produto,
+        localizacao,
+        valorDoTransporte,
+        cnpj
+    };
+    transportes.push(transporte);
+    res.status(201).json(transporte);
 });
 
 app.post('/api/products', async (req, res) => {
@@ -75,4 +96,6 @@ app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
 
-
+/*function gerarId() {
+    return Math.random().toString(36).substr(2, 9);
+}*/

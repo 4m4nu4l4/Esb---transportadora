@@ -14,7 +14,7 @@ function sleep(ms) {
 async function adicionarEstoque(nome, categoria, quantidade) {
     await sleep(3000);
     try {
-        await axios.post('http://localhost:3001/api/v1/stock', { nome, categoria, quantidade });
+        await axios.post('http://localhost:3001/api/estoque', { nome, categoria, quantidade });  // é melhor ser /api/estoque ou /api/products?
     } catch (error) {
         console.error('Erro ao adicionar estoque:', error.message);
     }
@@ -41,6 +41,12 @@ app.post('/api/products', async (req, res) => {
     }
 });
 
+/*RF03 - Ao alterar o produto em estoque deverá exibir um campo para a alteração de status (disponível, indisponível).
+
+O campo status_prod é atualizado se um novo valor é fornecido na requisição.
+
+Os possíveis valores para status_prod são "disponível" ou "indisponível". */
+
 app.put('/api/products/:id', (req, res) => {
     const { id } = req.params;
     const { nome, categoria, quantidade, status_prod } = req.body;
@@ -57,6 +63,7 @@ app.put('/api/products/:id', (req, res) => {
 
     res.status(200).json(produto);
 });
+
 
 app.delete('/api/products/:id', (req, res) => {
     const { id } = req.params;
