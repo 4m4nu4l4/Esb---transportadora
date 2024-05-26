@@ -12,17 +12,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// fiquei na dúvida se em transportadora, deveríamos ter essa função do estoque
-
-/* async function adicionarEstoque(nome, categoria, quantidade) {
-    await sleep(3000);
-    try {
-        await axios.post('http://localhost:3001/api/v1/estoque', { nome, categoria, quantidade });
-    } catch (error) {
-        console.error('Erro ao adicionar estoque:', error.message);
-    }
-}*/
-
 app.get('/', (req, res) => {
     res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
 });
@@ -43,7 +32,7 @@ app.post('/api/transporte', (req, res) => {
         produto,
         localizacao,
         valorDoTransporte,
-        cnpj
+        cnpj  // add as informa~ções que falta
     };
     transportes.push(transporte);
     res.status(201).json(transporte);
@@ -96,6 +85,4 @@ app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
 
-/*function gerarId() {
-    return Math.random().toString(36).substr(2, 9);
-}*/
+

@@ -15,31 +15,28 @@ app.use((req, res, next) => {
 });
 
 // Rotas para o serviço de produtos
-app.get('/api/products', async (req, res) => {
+app.get('http://localhost:3000/api/esb', async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:3000/api/products');
+        const response = await axios.get('http://localhost:3001/api/estoque');
         res.status(response.status).json(response.data);
     } catch (error) {
         res.status(error.response ? error.response.status : 500).json({ error: error.message });
     }
 });
 
-app.post('/api/products', async (req, res) => {
+app.post('http://localhost:3000/api/estoque', async (req, res) => {
     try {
         const { nome, categoria, quantidade, status_prod } = req.body;
         const produto = { id: gerarId(), nome, categoria, quantidade, status_prod };
         produtos.push(produto);
-
-        // Agora vamos enviar os dados do produto adicionado para o serviço de transporte
         const transporteData = {
             id: produto.id,
-            nomeDoEstoque: "Nome do estoque aqui", // Você pode substituir por um nome real de estoque se tiver essa informação
-            produto: produto.nome,
-            localizacao: "Localização aqui", // Substitua por uma localização real se disponível
-            valorDoTransporte: 0, // Substitua pelo valor real do transporte, se tiver essa informação
-            cnpj: "CNPJ aqui" // Substitua pelo CNPJ real da transportadora
+            nomeDoEstoque: nomeDoEstoque.nome, 
+            localizacao: localizacao.localizacao, 
+            valorDoTransporte: 0,
+            cnpj: cnpj 
         };
-        await axios.post('http://localhost:3001/api/transporte', transporteData);
+        await axios.post('http://localhost:3000/api/transporte', transporteData);
 
         res.status(201).json(produto);
     } catch (error) {
@@ -47,12 +44,12 @@ app.post('/api/products', async (req, res) => {
     }
 });
 
-app.put('/api/products/:id', async (req, res) => {
+app.put('http://localhost:3001/api/estoque', async (req, res) => {
     try {
         const { id } = req.params;
         const { nome, categoria, quantidade, status_prod } = req.body;
 
-        const response = await axios.put(`http://localhost:3000/api/products/${id}`, {
+        const response = await axios.put(`http://localhost:3001/api/estoque/${id}`, {
             nome,
             categoria,
             quantidade,
@@ -65,11 +62,11 @@ app.put('/api/products/:id', async (req, res) => {
     }
 });
 
-app.delete('/api/products/:id', async (req, res) => {
+app.delete('http://localhost:3001/api/estoque', async (req, res) => {
     try {
         const { id } = req.params;
 
-        const response = await axios.delete(`http://localhost:3000/api/products/${id}`);
+        const response = await axios.delete(`http://localhost:3001/api/estoque/${id}`);
 
         res.status(response.status).json(response.data);
     } catch (error) {
@@ -78,7 +75,7 @@ app.delete('/api/products/:id', async (req, res) => {
 });
 
 // Rota para adicionar transporte
-app.post('/api/transporte', async (req, res) => {
+app.post('http://localhost:3000/api/transporte', async (req, res) => {
     try {
         const { id, nomeDoEstoque, produto, localizacao, valorDoTransporte, cnpj } = req.body;
         const transporte = {
