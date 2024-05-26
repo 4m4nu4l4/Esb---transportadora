@@ -8,75 +8,70 @@ app.use(express.json());
 const produtos = [];
 const transportes = [];
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 app.get('/', (req, res) => {
     res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
 });
+app.get('/api/transporte', async (req, res) => {
 
-app.get('/api/products', (req, res) => {
-    res.status(200).json(produtos);
+    try {
+        const response = await axios.get('http://localhost:3002/api/esb');
+
+        res.status(201).json(response.data);
+    } catch (error) {
+        res.status(400).json({error: error.message});
+
+    }
 });
 
 /*RF08 - A transportadora deve adicionar o produto pelo seu id, nome do estoque, localização, valor do transporte, Cnpj.*/
 
-app.post('/api/transporte', (req, res) => {
-    const { id, nomeDoEstoque, produto, localizacao, valorDoTransporte, cnpj } = req.body;
-    const transporte = {
-        id: id || gerarId(),
-        nomeDoEstoque,
-        produto,
-        localizacao,
-        valorDoTransporte,
-        cnpj  // add as informa~ções que falta
-    };
-    transportes.push(transporte);
-    res.status(201).json(transporte);
-});
-
-app.post('/api/products', async (req, res) => {
+app.post('/api/transporte', async (req, res) => {
     try {
-        const { nome, categoria, quantidade, status_prod } = req.body;
-        const produto = { id: gerarId(), nome, categoria, quantidade, status_prod };
-        produtos.push(produto);
-
-        await adicionarEstoque(nome, categoria, quantidade); 
-        res.status(201).json(produto);
+        const { id, nomeDoEstoque, produto, localizacao, valorDoTransporte, cnpj } = req.body;
+        const transporte = {
+            id: id,
+            nomeDoEstoque,
+            produto,
+            localizacao,
+            valorDoTransporte,
+            cnpj
+        };
+        transportes.push(transporte);
+        res.status(201).json(transporte);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
-app.put('/api/products/:id', (req, res) => {
+app.put('/api/transporte/:id', (req, res) => {
     const { id } = req.params;
-    const { nome, categoria, quantidade, status_prod } = req.body;
+    const { nomeDoEstoque, produto, localizacao, valorDoTransporte, cnpj  } = req.body;
 
-    const produto = produtos.find(prod => prod.id === id);
-    if (!produto) {
+    const transporte = transportes.find(transp => transp.id === id);
+    if (!transporte) {
         return res.status(404).json({ error: 'Produto não encontrado' });
     }
 
-    produto.nome = nome !== undefined ? nome : produto.nome;
-    produto.categoria = categoria !== undefined ? categoria : produto.categoria;
-    produto.quantidade = quantidade !== undefined ? quantidade : produto.quantidade;
-    produto.status_prod = status_prod !== undefined ? status_prod : produto.status_prod;
+    transporte.nomeDoEstoque = nomeDoEstoque !== undefined ? nomeDoEstoque : transporte.nomeDoEstoque;
+    transporte.produto = produto !== undefined ? produto : transporte.produto;
+    transporte.localizacao = localizacao !== undefined ? localizacao : transporte.localizacao;
+    transporte.valorDoTransporte = valorDoTransporte !== undefined ? valorDoTransporte : transporte.valorDoTransporte;
+    transporte.cnpj = cnpj !== undefined ? cnpj : transporte.cnpj;
 
-    res.status(200).json(produto);
+    res.status(200).json(transporte);
 });
 
-app.delete('/api/products/:id', (req, res) => {
+app.delete('/api/transporte/:id', (req, res) => {
     const { id } = req.params;
 
-    const index = produtos.findIndex(prod => prod.id === id);
+    const index = transportes.findIndex(transp => transp.id === id);
     if (index === -1) {
-        return res.status(404).json({ error: 'Produto não encontrado' });
+        return res.status(404).json({ error: 'Transporte não localizado' });
     }
 
-    const [deletedProduct] = produtos.splice(index, 1);
+   transportes.splice(index, 1);
 
-    res.status(200).json(deletedProduct);
+    res.status(200).json();
 });
 
 app.listen(3000, () => {

@@ -7,34 +7,20 @@ app.use(express.json());
 
 const produtos = [];
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-/*async function adicionarEstoque(nome, categoria, quantidade) {
-    await sleep(3000);
-    try {
-        await axios.post('http://localhost:3001/api/estoque', { nome, categoria, quantidade });  // é melhor ser /api/estoque ou /api/products?
-    } catch (error) {
-        console.error('Erro ao adicionar estoque:', error.message);
-    }
-}*/
-
 app.get('/', (req, res) => {
     res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
 });
 
 app.get('/api/estoque', (req, res) => {
     res.status(200).json(produtos);
-});
+}); 
 
 app.post('/api/estoque', async (req, res) => {
     try {
         const { nome, categoria, quantidade, status_prod } = req.body;
-        const produto = { id, nome, categoria, quantidade, status_prod };
+        const produto = { nome, categoria, quantidade, status_prod };
         produtos.push(produto);
-
-        await adicionarEstoque(nome, categoria, quantidade); 
+ 
         res.status(201).json(produto);
     } catch (error) {
         res.status(400).json({ error: error.message });
