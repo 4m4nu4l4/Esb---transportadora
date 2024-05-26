@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 });
 
 // Rotas para o serviço de produtos
-app.get('http://localhost:3000/api/esb', async (req, res) => {
+app.get('/api/esb', async (req, res) => {
     try {
         const response = await axios.get('http://localhost:3001/api/estoque');
         res.status(response.status).json(response.data);
@@ -24,10 +24,10 @@ app.get('http://localhost:3000/api/esb', async (req, res) => {
     }
 });
 
-app.post('http://localhost:3000/api/estoque', async (req, res) => {
+app.post('/api/estoque', async (req, res) => {
     try {
         const { nome, categoria, quantidade, status_prod } = req.body;
-        const produto = { id: gerarId(), nome, categoria, quantidade, status_prod };
+        const produto = { id, nome, categoria, quantidade, status_prod };
         produtos.push(produto);
         const transporteData = {
             id: produto.id,
@@ -44,7 +44,7 @@ app.post('http://localhost:3000/api/estoque', async (req, res) => {
     }
 });
 
-app.put('http://localhost:3001/api/estoque', async (req, res) => {
+app.put('/api/estoque', async (req, res) => {
     try {
         const { id } = req.params;
         const { nome, categoria, quantidade, status_prod } = req.body;
@@ -62,7 +62,7 @@ app.put('http://localhost:3001/api/estoque', async (req, res) => {
     }
 });
 
-app.delete('http://localhost:3001/api/estoque', async (req, res) => {
+app.delete('/api/estoque', async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -75,7 +75,7 @@ app.delete('http://localhost:3001/api/estoque', async (req, res) => {
 });
 
 // Rota para adicionar transporte
-app.post('http://localhost:3000/api/transporte', async (req, res) => {
+app.post('/api/transporte', async (req, res) => {
     try {
         const { id, nomeDoEstoque, produto, localizacao, valorDoTransporte, cnpj } = req.body;
         const transporte = {
@@ -96,7 +96,3 @@ app.post('http://localhost:3000/api/transporte', async (req, res) => {
 app.listen(3002, () => {
     console.log('ESB rodando na porta 3002');
 });
-
-function gerarId() {
-    return Math.random().toString(36).substr(2, 9);
-}

@@ -11,27 +11,27 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function adicionarEstoque(nome, categoria, quantidade) {
+/*async function adicionarEstoque(nome, categoria, quantidade) {
     await sleep(3000);
     try {
         await axios.post('http://localhost:3001/api/estoque', { nome, categoria, quantidade });  // é melhor ser /api/estoque ou /api/products?
     } catch (error) {
         console.error('Erro ao adicionar estoque:', error.message);
     }
-}
+}*/
 
 app.get('/', (req, res) => {
     res.send('Bem vindo, nossa equipe é composta por: Carolaine, Emanuele e Maria Eduarda!');
 });
 
-app.get('http://localhost:3001/api/estoque', (req, res) => {
+app.get('/api/estoque', (req, res) => {
     res.status(200).json(produtos);
 });
 
-app.post('http://localhost:3001/api/estoque', async (req, res) => {
+app.post('/api/estoque', async (req, res) => {
     try {
         const { nome, categoria, quantidade, status_prod } = req.body;
-        const produto = { id: gerarId(), nome, categoria, quantidade, status_prod };
+        const produto = { id, nome, categoria, quantidade, status_prod };
         produtos.push(produto);
 
         await adicionarEstoque(nome, categoria, quantidade); 
@@ -41,7 +41,7 @@ app.post('http://localhost:3001/api/estoque', async (req, res) => {
     }
 });
 
-app.put('http://localhost:3001/api/estoque', (req, res) => {
+app.put('/api/estoque', (req, res) => {
     const { id } = req.params;
     const { nome, categoria, quantidade, status_prod } = req.body;
 
@@ -59,7 +59,7 @@ app.put('http://localhost:3001/api/estoque', (req, res) => {
 });
 
 
-app.delete('http://localhost:3001/api/estoque', (req, res) => {
+app.delete('/api/estoque', (req, res) => {
     const { id } = req.params;
 
     const index = produtos.findIndex(prod => prod.id === id);
@@ -76,6 +76,3 @@ app.listen(3001, () => {
     console.log('Servidor rodando na porta 3000');
 });
 
-function gerarId() {
-    return Math.random().toString(36).substr(2, 9);
-}

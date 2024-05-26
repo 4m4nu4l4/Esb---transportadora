@@ -20,9 +20,7 @@ app.get('/api/products', (req, res) => {
     res.status(200).json(produtos);
 });
 
-/*RF08 - A transportadora deve adicionar o produto pelo seu id, nome do estoque, localização, valor do transporte, Cnpj.
-
-Parcialmente atendido: A rota POST /api/transporte adiciona produtos com produto, preco e posicao. Falta incluir localização, valor do transporte, Cnpj. */
+/*RF08 - A transportadora deve adicionar o produto pelo seu id, nome do estoque, localização, valor do transporte, Cnpj.*/
 
 app.post('/api/transporte', (req, res) => {
     const { id, nomeDoEstoque, produto, localizacao, valorDoTransporte, cnpj } = req.body;
