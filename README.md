@@ -17,4 +17,4 @@
 
 [Apresentação - Canva 👩‍💻](https://www.canva.com/design/DAGEfry6hwk/dxTQKaVLR2gx5ecJFp4OUQ/edit?utm_content=DAGEfry6hwk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) 
 
-- Observação: Ao clicar nas imagens durante a apresentação será redirecionado ao arquivo correspondente no github!
+#### Observação: Ao clicar nas imagens durante a apresentação será redirecionado ao arquivo correspondente no github!
